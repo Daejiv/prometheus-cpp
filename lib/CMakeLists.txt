@@ -22,6 +22,7 @@ execute_process(
   ERROR_QUIET
 )
 string(REPLACE "libprotoc " "" PROTOBUF_VERSION ${PROTOBUF_VERSION_STRING})
+message(STATUS "Found protobuf version: ${PROTOBUF_VERSION}")
 
 add_library(prometheus-cpp
   check_names.cc

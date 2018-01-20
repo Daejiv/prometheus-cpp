@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 2.8.12.2 FATAL_ERROR)
 
 project(prometheus-cpp)
-enable_testing()
 include(GNUInstallDirs)
+
+# options
+
+option(PROMETHEUS_CPP_BUILD_TESTS "Build tests and benchmarks" ON)
+
+# config
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
@@ -11,7 +16,6 @@ if(NOT DEFINED CMAKE_CXX_STANDARD AND UNIX)
 endif()
 
 find_package(Protobuf REQUIRED)
-find_package(Telegraf)
 
 # suppress warnings
 
@@ -45,33 +49,43 @@ target_include_directories(civetweb PUBLIC
   ${CIVETWEB_INCLUDE_DIR}
 )
 
-# google mock
-
-add_library(gmock_main STATIC EXCLUDE_FROM_ALL
-  3rdparty/googletest/googletest/src/gtest-all.cc
-  3rdparty/googletest/googlemock/src/gmock-all.cc
-  3rdparty/googletest/googlemock/src/gmock_main.cc
-)
-
-target_include_directories(gmock_main
-  PUBLIC
-    3rdparty/googletest/googletest/include
-    3rdparty/googletest/googlemock/include
-  PRIVATE
-    3rdparty/googletest/googletest
-    3rdparty/googletest/googlemock
-)
-
-# google benchmark
-set(BENCHMARK_ENABLE_TESTING OFF)
-set(BENCHMARK_ENABLE_INSTALL OFF)
-set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
-add_subdirectory(3rdparty/benchmark)
-
 # prometheus-cpp
 
 add_subdirectory(lib)
-add_subdirectory(tests)
 
 file(GLOB includes include/prometheus)
 add_custom_target(_show_headers_in_ide SOURCES ${includes})
+
+
+# testing
+if (PROMETHEUS_CPP_BUILD_TESTS)
+  enable_testing()
+
+  find_package(Telegraf)
+
+  # google mock
+
+  add_library(gmock_main STATIC EXCLUDE_FROM_ALL
+    3rdparty/googletest/googletest/src/gtest-all.cc
+    3rdparty/googletest/googlemock/src/gmock-all.cc
+    3rdparty/googletest/googlemock/src/gmock_main.cc
+  )
+
+  target_include_directories(gmock_main
+    PUBLIC
+    3rdparty/googletest/googletest/include
+    3rdparty/googletest/googlemock/include
+    PRIVATE
+    3rdparty/googletest/googletest
+    3rdparty/googletest/googlemock
+  )
+
+  # google benchmark
+
+  set(BENCHMARK_ENABLE_TESTING OFF)
+  set(BENCHMARK_ENABLE_INSTALL OFF)
+  set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
+  add_subdirectory(3rdparty/benchmark)
+
+  add_subdirectory(tests)
+endif()
