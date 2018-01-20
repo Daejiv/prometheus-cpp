@@ -10,7 +10,6 @@ if(NOT DEFINED CMAKE_CXX_STANDARD AND UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
-find_package(GoogleBenchmark)
 find_package(Protobuf REQUIRED)
 find_package(Telegraf)
 
@@ -63,7 +62,16 @@ target_include_directories(gmock_main
     3rdparty/googletest/googlemock
 )
 
+# google benchmark
+set(BENCHMARK_ENABLE_TESTING OFF)
+set(BENCHMARK_ENABLE_INSTALL OFF)
+set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
+add_subdirectory(3rdparty/benchmark)
+
 # prometheus-cpp
 
 add_subdirectory(lib)
 add_subdirectory(tests)
+
+file(GLOB includes include/prometheus)
+add_custom_target(_show_headers_in_ide SOURCES ${includes})

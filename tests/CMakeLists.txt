@@ -1,7 +1,4 @@
-if(GoogleBenchmark_FOUND)
-  add_subdirectory(benchmark)
-endif()
-
+add_subdirectory(benchmark)
 add_subdirectory(integration)
 
 add_executable(prometheus_test

@@ -11,6 +11,6 @@ add_executable(benchmarks
 target_link_libraries(benchmarks PRIVATE prometheus-cpp)
 target_include_directories(benchmarks PRIVATE ${PROJECT_SOURCE_DIR}) # fixme
 
-target_link_libraries(benchmarks PRIVATE Google::Benchmark)
+target_link_libraries(benchmarks PRIVATE benchmark)
 
 add_test(NAME benchmarks COMMAND $<TARGET_FILE:benchmarks>)

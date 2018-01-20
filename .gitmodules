@@ -7,3 +7,6 @@
 [submodule "prometheus_client_model"]
 	path = 3rdparty/prometheus_client_model
 	url = https://github.com/prometheus/client_model.git
+[submodule "3rdparty/benchmark"]
+	path = 3rdparty/benchmark
+	url = https://github.com/google/benchmark.git
