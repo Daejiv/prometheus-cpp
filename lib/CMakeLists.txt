@@ -37,6 +37,8 @@ add_library(prometheus-cpp
   $<$<NOT:$<VERSION_LESS:${PROTOBUF_VERSION},3>>:json_serializer.cc>
   protobuf_delimited_serializer.cc
   registry.cc
+  summary.cc
+  summary_builder.cc
   text_serializer.cc
 
   # civetweb
